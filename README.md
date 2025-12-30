@@ -29,11 +29,5 @@ Deploy to GitHub Pages (optional)
 - npm run deploy
   - Publishes the production build in `dist/` to the `gh-pages` branch
 
-Optional Live Commentary
-- The game runs without any API key. If you want experimental live audio commentary, set an environment variable before `npm run dev`:
-  - macOS/Linux: `export GEMINI_API_KEY=your_key_here`
-  - Windows (PowerShell): `$Env:GEMINI_API_KEY="your_key_here"`
-  The game will attempt to open a live session; if not set, it silently falls back to text UI.
-
 Notes
 - This repository intentionally excludes large PDFs and generated JSON used during local development.
