@@ -1,0 +1,734 @@
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #2a582a; /* Retro dark green */
+    color: #f7fafc; 
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+.immersive-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Vertically center the main content */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.game-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center; /* Center title */
+    align-items: center;
+    padding: 15px 30px;
+    z-index: 5;
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+
+.header-content {
+    text-align: center;
+}
+
+.game-header h1 {
+    font-size: 2rem;
+    color: #e7d86f; /* Retro Yellow */
+    margin: 0;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.7);
+}
+
+.level-indicator {
+    font-size: 0.8rem;
+    color: #63b3ed;
+    margin-top: 5px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3; /* Below UI overlays, above background */
+}
+
+/* Retro Scoreboard */
+.scoreboard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    border-top: 4px solid #333;
+    padding: 8px 10px;
+    font-size: 1rem;
+    color: #e7d86f; /* Retro Yellow */
+    text-transform: uppercase;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px 15px;
+    z-index: 5;
+    box-sizing: border-box;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+.scoreboard .score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.scoreboard .score-label {
+    font-size: 0.8rem;
+    color: #ababab;
+    margin-right: 10px;
+}
+
+.scoreboard .score-value {
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+
+/* --- Base Button Style (Retro) --- */
+button {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #4299e1;
+    color: white;
+    padding: 8px 16px;
+    border: 2px solid #000;
+    border-radius: 0; /* No rounded corners for retro look */
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #000;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+}
+
+button:hover {
+    background-color: #3182ce;
+}
+
+button:active {
+    background-color: #2b6cb0;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000;
+}
+
+button:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: 2px 2px 0px #000;
+}
+
+/* --- Central Start/End Button Overlay --- */
+.start-game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.start-game-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.start-button-main {
+    padding: 15px 30px;
+    font-size: 1.5rem;
+}
+
+.game-instructions-panel {
+    margin-top: 40px;
+    background-color: rgba(10, 10, 10, 0.7);
+    border: 2px solid #a0aec0;
+    padding: 15px 25px;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.game-instructions-panel h3 {
+    font-size: 1.2rem;
+    color: #e7d86f;
+    margin: 0 0 15px 0;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.game-instructions-panel p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+.mobile-controls-instructions {
+    display: none;
+}
+
+/* Retro "Play Again?" Button */
+.btn-retro {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 4px solid #63b3ed;
+    color: white;
+    font-size: 2rem;
+    padding: 20px 40px;
+    text-shadow: 3px 3px 0 #000;
+    box-shadow: none;
+    transition: background-color 0.2s;
+}
+
+.btn-retro:hover {
+    background-color: rgba(66, 153, 225, 0.4);
+}
+.btn-retro:active {
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* --- Mobile Controls (New Simple, Visible Style) --- */
+.mobile-controls-container {
+    position: absolute;
+    bottom: 85px; /* Position above scoreboard */
+    left: 0;
+    width: 100%;
+    padding: 0 10px;
+    display: none; /* Hidden by default */
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.mobile-d-pad, .mobile-action-pad {
+    display: flex;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.mobile-btn {
+    background: rgba(20, 20, 20, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    font-size: 1rem;
+    width: 60px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0px #000;
+}
+.mobile-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+.mobile-btn.active {
+    background: #4299e1;
+    border-color: #fff;
+}
+
+.mobile-swing-btn {
+    width: 100px;
+    height: 65px;
+    font-size: 1.2rem;
+    background-color: #E13A7B;
+}
+
+/* --- Game Message Area --- */
+.game-message-container {
+    position: absolute;
+    bottom: 85px; /* Aligned with where mobile controls would be */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    pointer-events: none;
+    width: 90%;
+}
+
+.message-area {
+    font-size: 1.2rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+    padding: 5px 12px;
+    background-color: rgba(0,0,0,0.6);
+    line-height: 1.2;
+}
+
+.commentary-status {
+    font-size: 0.8rem;
+    color: #a0aec0;
+    background-color: rgba(0,0,0,0.7);
+    padding: 4px 10px;
+}
+
+/* --- Swing Instruction for Desktop --- */
+.swing-instruction {
+    font-size: 1rem;
+    color: #f7fafc;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.9);
+}
+
+/* Generic key/button highlight style */
+.key-highlight {
+    color: #e7d86f;
+    background-color: rgba(0,0,0,0.5);
+    padding: 2px 6px;
+    border: 1px solid #a0aec0;
+    display: inline-block;
+}
+
+/* --- Tutorial Highlight --- */
+.mobile-btn.tutorial-highlight {
+    animation: pulse 1.2s infinite ease-in-out;
+    border-color: #e7d86f; /* Retro Yellow */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(231, 216, 111, 0.4);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 15px rgba(231, 216, 111, 0.9);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(231, 216, 111, 0.4);
+    }
+}
+
+
+/* --- Media Queries for Mobile/Tablet --- */
+@media (max-width: 768px) {
+    .swing-instruction {
+        display: none; /* Hide SPACEBAR prompt on mobile */
+    }
+    .mobile-controls-container {
+        display: flex; /* Show mobile controls */
+    }
+    .game-message-container {
+       bottom: 155px; /* Move messages up to make room for controls */
+    }
+    .game-header h1 {
+        font-size: 1.8rem;
+    }
+    .scoreboard {
+        font-size: 0.9rem;
+        gap: 0 10px;
+    }
+    .scoreboard .score-value {
+        font-size: 1.2rem;
+    }
+    .message-area {
+        font-size: 1rem;
+    }
+    .btn-retro {
+        font-size: 1.5rem;
+        padding: 15px 30px;
+    }
+    .desktop-controls-instructions {
+        display: none;
+    }
+    .mobile-controls-instructions {
+        display: block;
+    }
+}
+
+@media (max-width: 380px) {
+    .game-header h1 {
+        font-size: 1.5rem;
+    }
+    .mobile-btn {
+        width: 50px;
+        height: 45px;
+    }
+    .mobile-swing-btn {
+        width: 80px;
+        height: 55px;
+    }
+}
+
+
+/* --- Impact Message Effect Styles (Kept as is) --- */
+.impact-message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+.impact-message-text {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 3.5rem;
+  color: #ffffff;
+  text-shadow: 3px 3px 0px #ff00ff, -3px -3px 0px #00ffff, 0 0 10px #ffffff, 0 0 20px #ff00ff, 0 0 30px #00ffff;
+  padding: 15px 25px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 3px solid #ffffff;
+  border-radius: 0;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5), 0 0 50px rgba(255, 0, 255, 0.5);
+  animation: impactKeyframes 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  transform-origin: center center;
+  text-align: center;
+  line-height: 1.2;
+}
+@keyframes impactKeyframes {
+  0% { transform: scale(0.2) rotate(-20deg) translateY(50px); opacity: 0; }
+  30% { transform: scale(1.25) rotate(7deg) translateY(0px); opacity: 1; }
+  50% { transform: scale(1.0) rotate(-3deg); opacity: 1; }
+  80% { transform: scale(1.05) rotate(0deg); opacity: 1; }
+  100% { transform: scale(2.5) rotate(15deg) translateY(-50px); opacity: 0; }
+}
+
+/* --- Player Select Screen --- */
+.player-select-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.65);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.player-select-title {
+    font-size: 2rem;
+    color: #e7d86f; /* Retro Yellow */
+    margin: 0 0 30px 0;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.7);
+    text-align: center;
+}
+
+.player-options {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.player-card {
+    background-color: rgba(20, 20, 20, 0.7);
+    border: 4px solid #4a5568; /* Muted border */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: transform 0.2s ease-out, border-color 0.2s;
+    width: 150px;
+}
+
+.player-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-color: #63b3ed; /* Brighter blue on hover */
+}
+
+.player-card img {
+    width: 80px;
+    height: 100px;
+    object-fit: contain;
+    image-rendering: pixelated; /* Keep the pixel art sharp */
+}
+
+.player-card .player-name {
+    font-size: 1.5rem;
+    color: #f7fafc;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+    .player-select-title {
+        font-size: 1.8rem;
+    }
+    .player-card {
+        width: 120px;
+        padding: 15px;
+    }
+}
+
+/* --- Concepts Display Overlay (NEW STYLE) --- */
+.concept-overlay {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 300px; /* Wider for paragraph text */
+    max-width: 90vw; /* Responsive on mobile */
+    z-index: 4;
+    pointer-events: none; /* Allows click-through to game */
+    animation: fadeInSlide 0.5s ease-out;
+}
+
+.concept-card {
+    background-color: rgba(16, 20, 28, 0.95);
+    border-left: 5px solid #63b3ed;
+    border-radius: 4px;
+    padding: 20px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.concept-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+}
+
+.concept-icon {
+    font-size: 1.2rem;
+}
+
+.concept-label {
+    font-size: 0.7rem;
+    color: #e7d86f; /* Retro Yellow */
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.concept-text {
+    font-family: 'Arial', sans-serif; /* Readable font for long text */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    text-shadow: none; /* Remove pixel shadow for readability */
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Knowledge Book styles */
+.book-dock {
+    position: fixed;
+    right: 16px;
+    top: 96px;
+    width: min(32vw, 360px);
+    max-height: 44vh;
+    overflow: hidden auto;
+    background: rgba(0,0,0,0.55);
+    color: #f1f1f1;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    padding: 10px 12px;
+    z-index: 7;
+}
+.book-dock-header { font-weight: 700; opacity: 0.9; margin-bottom: 8px; }
+.book-dock-entry .book-dock-title { font-size: 0.85rem; color: #b8e3ff; margin-bottom: 4px; }
+.book-dock-entry .book-dock-text { font-size: 0.92rem; line-height: 1.4; }
+.book-dock-entry.antipattern .book-dock-title { color: #ffc2c2; }
+.book-dock-empty { opacity: 0.8; font-size: 0.9rem; }
+.book-dock-footer { margin-top: 8px; font-size: 0.8rem; opacity: 0.8; }
+
+.book-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+.book-panel {
+    width: min(80vw, 860px);
+    max-height: 80vh;
+    background: #101418;
+    color: #dfe7ee;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+    display: flex;
+    flex-direction: column;
+}
+.book-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.book-title { font-weight: 800; letter-spacing: 0.3px; }
+.book-nav { display: flex; align-items: center; gap: 8px; }
+.book-btn { background: #1b2733; color: #e7f0f8; border: 1px solid #2a3a48; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+.book-page { opacity: 0.85; font-variant-numeric: tabular-nums; }
+.book-content { padding: 14px; overflow: auto; }
+.book-content.book-spread { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.book-page-left, .book-page-right { background: #0f141a; border: 1px solid rgba(255,255,255,0.06); padding: 16px 18px; border-radius: 8px; }
+.book-page-title { font-weight: 800; letter-spacing: 0.2px; margin-bottom: 6px; color: #9bd1ff; }
+.book-page-sub { opacity: 0.75; font-size: 0.9rem; margin-bottom: 10px; }
+.book-entry-level { color: #9bd1ff; font-weight: 700; margin-bottom: 8px; }
+.book-entry-text { font-size: 1.02rem; line-height: 1.6; }
+.book-entry.antipattern .book-entry-level { color: #ffaaaa; }
+.book-help { padding: 10px 14px; opacity: 0.75; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); }
+
+/* --- Level Transition Overlay --- */
+.level-transition-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* --- Lesson Overlay --- */
+.lesson-overlay {
+    position: absolute;
+    bottom: 160px;
+    left: 20px;
+    width: 380px;
+    max-width: 90vw;
+    z-index: 6;
+    pointer-events: none;
+    animation: fadeInSlide 0.4s ease-out;
+}
+
+.lesson-card {
+    background-color: rgba(16, 20, 28, 0.95);
+    border-left: 5px solid #68d391;
+    border-radius: 4px;
+    padding: 16px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+}
+.lesson-icon { font-size: 1rem; }
+.lesson-label { font-size: 0.75rem; text-transform: uppercase; color: #e7d86f; letter-spacing: 1px; }
+.lesson-text { font-family: Arial, sans-serif; font-size: 0.9rem; line-height: 1.5; color: #e2e8f0; }
+
+.level-card {
+    background-color: #1a202c;
+    border: 4px solid #4a5568;
+    padding: 30px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 0 30px rgba(66, 153, 225, 0.3);
+}
+
+.level-card h2 {
+    color: #68d391;
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.level-card .divider {
+    height: 2px;
+    background: #4a5568;
+    margin: 15px 0;
+}
+
+/* --- Debug Overlay --- */
+.debug-overlay {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 50;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font: 12px/1.4 monospace;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.level-card h3 {
+    color: #cbd5e0;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.level-title {
+    color: #e7d86f;
+    font-size: 1.8rem;
+    margin: 10px 0;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.level-desc {
+    color: #a0aec0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    font-family: sans-serif; /* Cleaner font for longer text */
+}
+
+.level-stats {
+    display: flex;
+    justify-content: space-around;
+    background: #2d3748;
+    padding: 10px;
+    margin-bottom: 25px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.start-level-btn {
+    font-size: 1.2rem;
+    background-color: #4299e1;
+    width: 100%;
+}

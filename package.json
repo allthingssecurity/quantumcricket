@@ -1,0 +1,23 @@
+{
+  "name": "quantum-chase",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5280",
+    "build": "vite build",
+    "preview": "vite preview --port 5280",
+    "sections": "node scripts/extract-pdf-sections.cjs",
+    "lessons": "node scripts/extract-pdf-lessons.cjs"
+  },
+  "dependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "pdf-parse": "^2.4.5",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0"
+  }
+}
