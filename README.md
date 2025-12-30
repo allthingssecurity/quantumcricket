@@ -31,3 +31,24 @@ Deploy to GitHub Pages (optional)
 
 Notes
 - This repository intentionally excludes large PDFs and generated JSON used during local development.
+
+## Quantum Badminton (Sub‑App)
+
+- Play: https://allthingssecurity.github.io/quantumcricket/badminton/
+
+Controls
+- Move: mouse/finger to position racket
+- Swing: Space or click/tap
+- Pause/Book: P opens a two‑page Knowledge Book (Arrow keys to flip)
+- Resume: R
+- Scoring: Rally to 21; Level Complete overlay appears at game end
+
+Local Dev
+1) cd badminton-app
+2) npm install
+3) npm run dev (open the printed localhost URL)
+
+Deploy to GitHub Pages (under /badminton/)
+- The sub‑app honors a base path via BASE_PATH (see badminton-app/vite.config.ts).
+- Build: `cd badminton-app && BASE_PATH=/badminton/ npm run build`
+- Publish: copy badminton-app/dist/ into the gh-pages branch at badminton/ (this repo already does this layout).
