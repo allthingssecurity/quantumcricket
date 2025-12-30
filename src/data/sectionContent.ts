@@ -12,11 +12,7 @@ export type SectionBucket = {
 export type SectionContent = Record<string, SectionBucket>;
 
 export async function loadSectionContent(): Promise<SectionContent> {
-  try {
-    const mod = await import('./sectionContent.json', { with: { type: 'json' } } as any);
-    return (mod.default || mod) as SectionContent;
-  } catch (e) {
-    return {};
-  }
+  // In the Pages build, we don't include any external section content.
+  // Return an empty object so the engine uses per-level curated content only.
+  return {};
 }
-

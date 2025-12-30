@@ -7,6 +7,7 @@
     "dev": "vite --port 5280",
     "build": "vite build",
     "preview": "vite preview --port 5280",
+    "deploy": "gh-pages -d dist",
     "sections": "node scripts/extract-pdf-sections.cjs",
     "lessons": "node scripts/extract-pdf-lessons.cjs"
   },
@@ -19,5 +20,8 @@
     "react-dom": "^19.2.3",
     "typescript": "^5.9.3",
     "vite": "^7.3.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
   }
 }
